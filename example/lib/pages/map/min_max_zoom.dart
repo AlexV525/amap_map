@@ -1,5 +1,6 @@
 import 'package:amap_map/amap_map.dart';
 import 'package:flutter/material.dart';
+import 'package:x_amap_base/x_amap_base.dart';
 
 class MinMaxZoomDemoPage extends StatefulWidget {
   MinMaxZoomDemoPage({super.key});
@@ -104,10 +105,10 @@ class _BodyState extends State<MinMaxZoomDemoPage> {
   }
 
   //移动视野
-  void _onCameraMove(CameraPosition cameraPosition) {}
+  void _onCameraMove(CameraPosition cameraPosition, VisibleRegion visibleRegion,) {}
 
   //移动地图结束
-  void _onCameraMoveEnd(CameraPosition cameraPosition) {
+  void _onCameraMoveEnd(CameraPosition cameraPosition, VisibleRegion visibleRegion,) {
     setState(() {
       _currentZoom = '当前缩放级别：${cameraPosition.zoom}';
     });

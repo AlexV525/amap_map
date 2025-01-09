@@ -18,11 +18,11 @@ dependencies:
   amap_map:
     path: ../
   x_common: ^1.0.4
-  x_amap_base: ^1.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

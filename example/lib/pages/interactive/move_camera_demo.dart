@@ -13,6 +13,7 @@ class MoveCameraDemoPage extends StatefulWidget {
 class _BodyState extends State<MoveCameraDemoPage> {
   AMapController? _mapController;
   String? _currentZoom;
+
   @override
   Widget build(BuildContext context) {
     final AMapWidget amap = AMapWidget(
@@ -129,10 +130,16 @@ class _BodyState extends State<MoveCameraDemoPage> {
   }
 
   //移动视野
-  void _onCameraMove(CameraPosition cameraPosition) {}
+  void _onCameraMove(
+    CameraPosition cameraPosition,
+    VisibleRegion visibleRegion,
+  ) {}
 
   //移动地图结束
-  void _onCameraMoveEnd(CameraPosition cameraPosition) {
+  void _onCameraMoveEnd(
+    CameraPosition cameraPosition,
+    VisibleRegion visibleRegion,
+  ) {
     setState(() {
       _currentZoom = '当前缩放级别：${cameraPosition.zoom}';
     });

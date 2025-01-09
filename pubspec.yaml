@@ -22,7 +22,11 @@ dependencies:
   plugin_platform_interface: ^2.1.8
   stream_transform: ^2.0.0
 
-  x_amap_base: ^1.0.3
+#  x_amap_base: ^1.0.3
+  x_amap_base:
+    git:
+      url: https://github.com/AlexV525/amap_base
+      ref: 'db0e5760'
   x_common: ^1.0.4
 
 dev_dependencies:

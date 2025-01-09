@@ -189,16 +189,26 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
 
       case 'camera#onMove':
         try {
-          _mapEventStreamController.add(CameraPositionMoveEvent(
-              mapId, CameraPosition.fromMap(call.arguments['position'])!));
+          _mapEventStreamController.add(
+            CameraPositionMoveEvent(
+              mapId,
+              CameraPosition.fromMap(call.arguments['position'])!,
+              VisibleRegion.fromJson(call.arguments['region'])!,
+            ),
+          );
         } catch (e) {
           print("camera#onMove error===>$e");
         }
         break;
       case 'camera#onMoveEnd':
         try {
-          _mapEventStreamController.add(CameraPositionMoveEndEvent(
-              mapId, CameraPosition.fromMap(call.arguments['position'])!));
+          _mapEventStreamController.add(
+            CameraPositionMoveEndEvent(
+              mapId,
+              CameraPosition.fromMap(call.arguments['position'])!,
+              VisibleRegion.fromJson(call.arguments['region'])!,
+            ),
+          );
         } catch (e) {
           print("camera#onMoveEnd error===>$e");
         }

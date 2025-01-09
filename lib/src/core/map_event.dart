@@ -23,12 +23,16 @@ class LocationChangedEvent extends MapEvent<AMapLocation> {
 
 ///地图移动回调
 class CameraPositionMoveEvent extends MapEvent<CameraPosition> {
-  CameraPositionMoveEvent(super.mapId, super.value);
+  CameraPositionMoveEvent(super.mapId, super.value, this.visibleRegion);
+
+  final VisibleRegion visibleRegion;
 }
 
 ///地图移动结束回调
 class CameraPositionMoveEndEvent extends MapEvent<CameraPosition> {
-  CameraPositionMoveEndEvent(super.mapId, super.value);
+  CameraPositionMoveEndEvent(super.mapId, super.value, this.visibleRegion);
+
+  final VisibleRegion visibleRegion;
 }
 
 ///点击地图回调

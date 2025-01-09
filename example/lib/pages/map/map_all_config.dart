@@ -57,6 +57,7 @@ class _MapUiBodyState extends State<AllMapConfigDemoPage> {
   ///自定义定位小蓝点
   final MyLocationStyleOptions _myLocationStyleOptions =
       MyLocationStyleOptions(false);
+
   @override
   void initState() {
     super.initState();
@@ -390,12 +391,24 @@ class _MapUiBodyState extends State<AllMapConfigDemoPage> {
     print('_onLocationChanged ${location.toJson()}');
   }
 
-  void _onCameraMove(CameraPosition cameraPosition) {
-    print('onCameraMove===> ${cameraPosition.toMap()}');
+  void _onCameraMove(
+    CameraPosition cameraPosition,
+    VisibleRegion visibleRegion,
+  ) {
+    print(
+      'onCameraMove===> '
+      '${cameraPosition.toMap()}, ${visibleRegion.toJson()}',
+    );
   }
 
-  void _onCameraMoveEnd(CameraPosition cameraPosition) {
-    print('_onCameraMoveEnd===> ${cameraPosition.toMap()}');
+  void _onCameraMoveEnd(
+    CameraPosition cameraPosition,
+    VisibleRegion visibleRegion,
+  ) {
+    print(
+      '_onCameraMoveEnd===> '
+      '${cameraPosition.toMap()}, ${visibleRegion.toJson()}',
+    );
   }
 
   void _onMapTap(LatLng latLng) {

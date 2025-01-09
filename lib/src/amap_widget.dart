@@ -86,10 +86,12 @@ class AMapWidget extends StatefulWidget {
   final MapCreatedCallback? onMapCreated;
 
   /// 相机视角持续移动的回调
-  final ArgumentCallback<CameraPosition>? onCameraMove;
+  final void Function(CameraPosition argument, VisibleRegion region)?
+      onCameraMove;
 
   /// 相机视角移动结束的回调
-  final ArgumentCallback<CameraPosition>? onCameraMoveEnd;
+  final void Function(CameraPosition argument, VisibleRegion region)?
+      onCameraMoveEnd;
 
   /// 地图单击事件的回调
   final ArgumentCallback<LatLng>? onTap;

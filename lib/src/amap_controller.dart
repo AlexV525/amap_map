@@ -55,7 +55,7 @@ class AMapController {
     _methodChannel
         .onCameraMove(mapId: mapId)
         .listen((CameraPositionMoveEvent e) {
-      _mapState.widget.onCameraMove?.call(e.value);
+      _mapState.widget.onCameraMove?.call(e.value, e.visibleRegion);
       if (_mapState.widget.infoWindowAdapter != null) {
         _mapState.updateMarkers();
       }
@@ -64,7 +64,7 @@ class AMapController {
     _methodChannel
         .onCameraMoveEnd(mapId: mapId)
         .listen((CameraPositionMoveEndEvent e) {
-      _mapState.widget.onCameraMoveEnd?.call(e.value);
+      _mapState.widget.onCameraMoveEnd?.call(e.value, e.visibleRegion);
     });
     _methodChannel
         .onMapTap(mapId: mapId)
