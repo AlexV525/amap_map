@@ -16,6 +16,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Poi;
+import com.amap.api.maps.model.VisibleRegion;
 import com.amap.flutter.map.MyMethodCallHandler;
 import com.amap.flutter.map.utils.Const;
 import com.amap.flutter.map.utils.ConvertUtil;
@@ -261,6 +262,13 @@ public class MapController
         return null;
     }
 
+    private VisibleRegion getVisibleRegion() {
+        if (null != amap) {
+            return amap.getProjection().getVisibleRegion();
+        }
+        return null;
+    }
+
     @Override
     public void onMyLocationChange(Location location) {
         if (null != methodChannel && myLocationShowing) {
@@ -276,6 +284,8 @@ public class MapController
         if (null != methodChannel) {
             final Map<String, Object> arguments = new HashMap<String, Object>(2);
             arguments.put("position", ConvertUtil.cameraPositionToMap(cameraPosition));
+            final VisibleRegion region = getVisibleRegion();
+            arguments.put("region", ConvertUtil.visibleRegionToMap(region));
             methodChannel.invokeMethod("camera#onMove", arguments);
             LogUtil.i(CLASS_NAME, "onCameraChange===>" + arguments);
         }
@@ -286,11 +296,12 @@ public class MapController
         if (null != methodChannel) {
             final Map<String, Object> arguments = new HashMap<String, Object>(2);
             arguments.put("position", ConvertUtil.cameraPositionToMap(cameraPosition));
+            final VisibleRegion region = getVisibleRegion();
+            arguments.put("region", ConvertUtil.visibleRegionToMap(region));
             methodChannel.invokeMethod("camera#onMoveEnd", arguments);
             LogUtil.i(CLASS_NAME, "onCameraChangeFinish===>" + arguments);
         }
     }
-
 
     @Override
     public void onMapClick(LatLng latLng) {

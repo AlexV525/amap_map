@@ -21,6 +21,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Poi;
+import com.amap.api.maps.model.VisibleRegion;
 import com.amap.flutter.map.core.AMapOptionsSink;
 
 import java.lang.reflect.Method;
@@ -182,6 +183,23 @@ public class ConvertUtil {
         data.put("target", latLngToList(position.target));
         data.put("tilt", position.tilt);
         data.put("zoom", position.zoom);
+        return data;
+    }
+
+    public static Object visibleRegionToMap(VisibleRegion region) {
+        if (region == null) {
+            return null;
+        }
+        final List<Object> dataLatLngBounds = Arrays.asList(
+            latLngToList(region.latLngBounds.southwest),
+            latLngToList(region.latLngBounds.northeast)
+        );
+        final Map<String, Object> data = new HashMap<>();
+        data.put("latLngBounds", dataLatLngBounds);
+        data.put("nearLeft", latLngToList(region.nearLeft));
+        data.put("nearRight", latLngToList(region.nearRight));
+        data.put("farLeft", latLngToList(region.farLeft));
+        data.put("farRight", latLngToList(region.farRight));
         return data;
     }
 
