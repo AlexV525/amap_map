@@ -10,6 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class AMapCameraPosition;
+@class AMapCoordinateBounds;
+@class AMapVisibleRegion;
 @class AMapOption;
 @protocol FlutterPluginRegistrar;
 
@@ -19,6 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 获取地图的当前cameraPostion
 - (AMapCameraPosition *)getCurrentCameraPosition;
+
+- (AMapCoordinateBounds *)getCurrentBounds;
+
+- (AMapVisibleRegion *)getCurrentVisibleRegion;
 
 /// 地图camera更新操作
 - (void)setCameraUpdateDict:(NSDictionary *)updateDict;

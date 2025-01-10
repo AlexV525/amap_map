@@ -8,6 +8,8 @@
 #import "AMapViewController.h"
 #import "AMapJsonUtils.h"
 #import "AMapCameraPosition.h"
+#import "AMapCoordinateBounds.h"
+#import "AMapVisibleRegion.h"
 #import "MAMapView+Flutter.h"
 #import "MAAnnotationView+Flutter.h"
 #import "AMapMarkerController.h"
@@ -487,10 +489,10 @@
 - (void)mapViewRegionChanged:(MAMapView *)mapView {
 //    TODO: 这里消息回调太多，channel可能有性能影响
     AMapCameraPosition *cameraPos = [mapView getCurrentCameraPosition];
-    NSDictionary *dict = [cameraPos toDictionary];
-    if (dict) {
-        [_channel invokeMethod:@"camera#onMove" arguments:@{@"position":dict}];
-    }
+    NSDictionary *position = [cameraPos toDictionary];
+    AMapVisibleRegion *mapRegion = [mapView getCurrentVisibleRegion];
+    NSDictionary *region = [mapRegion toDictionary];
+    [_channel invokeMethod:@"camera#onMove" arguments:@{@"position": position, @"region": region}];
 }
 
 /**
@@ -500,10 +502,10 @@
  */
 - (void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     AMapCameraPosition *cameraPos = [mapView getCurrentCameraPosition];
-    NSDictionary *dict = [cameraPos toDictionary];
-    if (dict) {
-        [_channel invokeMethod:@"camera#onMoveEnd" arguments:@{@"position":dict}];
-    }
+    NSDictionary *position = [cameraPos toDictionary];
+    AMapVisibleRegion *mapRegion = [mapView getCurrentVisibleRegion];
+    NSDictionary *region = [mapRegion toDictionary];
+    [_channel invokeMethod:@"camera#onMoveEnd" arguments:@{@"position": position, @"region": region}];
 }
 
 @end

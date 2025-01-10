@@ -8,6 +8,8 @@
 
 #import "MAMapView+Flutter.h"
 #import "AMapCameraPosition.h"
+#import "AMapCoordinateBounds.h"
+#import "AMapVisibleRegion.h"
 #import "AMapConvertUtil.h"
 #import "AMapJsonUtils.h"
 #import <Flutter/Flutter.h>
@@ -33,6 +35,32 @@
     position.bearing = self.rotationDegree;
     position.tilt = self.cameraDegree;
     return position;
+}
+
+- (AMapCoordinateBounds *)getCurrentBounds {
+    AMapCoordinateBounds *mapBounds = [[AMapCoordinateBounds alloc] init];
+    CGSize size = self.frame.size;
+    CLLocationCoordinate2D northeast = [self convertPoint:CGPointMake(size.width, 0.0) toCoordinateFromView:self];
+    CLLocationCoordinate2D southwest = [self convertPoint:CGPointMake(0.0, size.height) toCoordinateFromView:self];
+    mapBounds.northeast = northeast;
+    mapBounds.southwest = southwest;
+    return mapBounds;
+}
+
+- (AMapVisibleRegion *)getCurrentVisibleRegion {
+    AMapVisibleRegion *region = [[AMapVisibleRegion alloc] init];
+    AMapCoordinateBounds *bounds = [self getCurrentBounds];
+    CGSize size = self.frame.size;
+    CLLocationCoordinate2D farLeft = [self convertPoint:CGPointMake(0.0, 0.0) toCoordinateFromView:self];
+    CLLocationCoordinate2D farRight = [self convertPoint:CGPointMake(size.width, 0.0) toCoordinateFromView:self];
+    CLLocationCoordinate2D nearLeft = [self convertPoint:CGPointMake(0.0, size.height) toCoordinateFromView:self];
+    CLLocationCoordinate2D nearRight = [self convertPoint:CGPointMake(size.width, size.height) toCoordinateFromView:self];
+    region.latLngBounds = bounds;
+    region.farLeft = farLeft;
+    region.farRight = farRight;
+    region.nearLeft = nearLeft;
+    region.nearRight = nearRight;
+    return region;
 }
 
 - (void)setCameraUpdateDict:(NSDictionary *)updateDict {
