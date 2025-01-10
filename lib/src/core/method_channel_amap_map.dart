@@ -39,7 +39,17 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
     MethodChannel? channel = _channels[mapId];
     if (channel == null) {
       channel = MethodChannel('amap_map_$mapId');
-      channel.setMethodCallHandler((call) => _handleMethodCall(call, mapId));
+      channel.setMethodCallHandler((call) {
+        return _handleMethodCall(call, mapId).catchError((e, s) {
+          FlutterError.presentError(
+            FlutterErrorDetails(
+              exception: e,
+              stack: s,
+              library: 'MethodChannelAMapFlutterMap',
+            ),
+          );
+        });
+      });
       _channels[mapId] = channel;
     }
     return channel.invokeMethod<void>('map#waitForMap');
@@ -179,72 +189,66 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
   Future<dynamic> _handleMethodCall(MethodCall call, int mapId) async {
     switch (call.method) {
       case 'location#changed':
-        try {
-          _mapEventStreamController.add(LocationChangedEvent(
-              mapId, AMapLocation.fromMap(call.arguments['location'])!));
-        } catch (e) {
-          print("location#changed error=======>$e");
-        }
+        _mapEventStreamController.add(
+          LocationChangedEvent(
+            mapId,
+            AMapLocation.fromMap(call.arguments['location'])!,
+          ),
+        );
         break;
 
       case 'camera#onMove':
-        try {
-          _mapEventStreamController.add(
-            CameraPositionMoveEvent(
-              mapId,
-              CameraPosition.fromMap(call.arguments['position'])!,
-              VisibleRegion.fromJson(call.arguments['region'])!,
-            ),
-          );
-        } catch (e) {
-          print("camera#onMove error===>$e");
-        }
+        _mapEventStreamController.add(
+          CameraPositionMoveEvent(
+            mapId,
+            CameraPosition.fromMap(call.arguments['position'])!,
+            VisibleRegion.fromJson(call.arguments['region'])!,
+          ),
+        );
         break;
       case 'camera#onMoveEnd':
-        try {
-          _mapEventStreamController.add(
-            CameraPositionMoveEndEvent(
-              mapId,
-              CameraPosition.fromMap(call.arguments['position'])!,
-              VisibleRegion.fromJson(call.arguments['region'])!,
-            ),
-          );
-        } catch (e) {
-          print("camera#onMoveEnd error===>$e");
-        }
+        _mapEventStreamController.add(
+          CameraPositionMoveEndEvent(
+            mapId,
+            CameraPosition.fromMap(call.arguments['position'])!,
+            VisibleRegion.fromJson(call.arguments['region'])!,
+          ),
+        );
         break;
       case 'map#onTap':
         _mapEventStreamController.add(
-            MapTapEvent(mapId, LatLng.fromJson(call.arguments['latLng'])!));
+          MapTapEvent(mapId, LatLng.fromJson(call.arguments['latLng'])!),
+        );
         break;
       case 'map#onLongPress':
-        _mapEventStreamController.add(MapLongPressEvent(
-            mapId, LatLng.fromJson(call.arguments['latLng'])!));
+        _mapEventStreamController.add(
+          MapLongPressEvent(mapId, LatLng.fromJson(call.arguments['latLng'])!),
+        );
         break;
 
       case 'marker#onTap':
-        _mapEventStreamController.add(MarkerTapEvent(
-          mapId,
-          call.arguments['markerId'],
-        ));
+        _mapEventStreamController.add(
+          MarkerTapEvent(mapId, call.arguments['markerId']),
+        );
         break;
       case 'marker#onDragEnd':
-        _mapEventStreamController.add(MarkerDragEndEvent(
+        _mapEventStreamController.add(
+          MarkerDragEndEvent(
             mapId,
             LatLng.fromJson(call.arguments['position'])!,
-            call.arguments['markerId']));
+            call.arguments['markerId'],
+          ),
+        );
         break;
       case 'polyline#onTap':
-        _mapEventStreamController
-            .add(PolylineTapEvent(mapId, call.arguments['polylineId']));
+        _mapEventStreamController.add(
+          PolylineTapEvent(mapId, call.arguments['polylineId']),
+        );
         break;
       case 'map#onPoiTouched':
-        try {
-          _mapEventStreamController.add(MapPoiTouchEvent(
-              mapId, AMapPoi.fromJson(call.arguments['poi'])!));
-        } catch (e) {
-          print('map#onPoiTouched error===>$e');
-        }
+        _mapEventStreamController.add(
+          MapPoiTouchEvent(mapId, AMapPoi.fromJson(call.arguments['poi'])!),
+        );
         break;
     }
   }
